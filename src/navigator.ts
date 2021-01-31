@@ -3,6 +3,7 @@ import Queue from "./destinationQueue";
 
 class Navigator {
     destinations: Queue<LatLon> = new Queue<LatLon>();
+    locations: Queue<LatLon> = new Queue<LatLon>();
     currentLocation: LatLon = new LatLon(0, 0);
     sourceLocation: LatLon = new LatLon(0, 0);
     previousLocation: LatLon = new LatLon(0, 0);
@@ -41,7 +42,27 @@ class Navigator {
 
     updateCurrentLocation(latitude: number, longitude: number):void {
         this.previousLocation = this.currentLocation;
-        this.currentLocation = new LatLon(latitude, longitude);
+        const location = new LatLon(latitude, longitude)
+
+        this.locations.enqueue(location);
+
+        if (this.locations.size() == 50) {
+            this.locations.dequeue();
+
+            let latTotal: number = 0;
+            let lonTotal: number = 0;
+
+            this.locations.queue().forEach((element) => {
+                latTotal += element.latitude;
+                lonTotal += element.longitude;
+            })
+
+            this.currentLocation = new LatLon(latTotal / this.locations.size(), lonTotal / this.locations.size());
+            this.locations.enqueue(this.currentLocation);
+            this.locations.dequeue();
+        } else {
+            this.currentLocation = location;
+        }
     }
 
     setSourceLocation(latitude: number, longitude: number):void {

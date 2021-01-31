@@ -40,14 +40,19 @@ const destinationPoints = [
 ]
 
 const obstacles = [
+  // {
+  //   latitude:52.47715035313238,
+  //   longitude:13.3951399999999,
+  //   radius: 2
+  // },
+  // {
+  //   latitude:52.47712035313238,
+  //   longitude:13.3950199999999,
+  //   radius: 2
+  // },
   {
-    latitude:52.47715035313238,
-    longitude:13.3951399999999,
-    radius: 2
-  },
-  {
-    latitude:52.47712035313238,
-    longitude:13.3950199999999,
+    latitude:52.47713035313238,
+    longitude:13.3952399999999,
     radius: 2
   },
 ]
@@ -131,6 +136,7 @@ for (let i = 1; i < itemCount; i++) {
 }
 
 const loop: ControlLoop = ({location, heading, targetFinderSignal: number,  clock, proximity}, {engines, steering}) => {
+
   navigator.updateCurrentLocation(location.latitude, location.longitude);
 
   sensor.updateProximities(proximity);
@@ -149,7 +155,7 @@ const simulation = new Simulation({
     width: 800,
     height: 800,
   },
-  //physicalConstraints: AUTHENTICITY_LEVEL2,
+  physicalConstraints: AUTHENTICITY_LEVEL2,
   obstacles: obstacles,
 });
 

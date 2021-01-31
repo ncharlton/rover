@@ -3,9 +3,9 @@ import Navigator from "./navigator";
 import {Engines, PhysicalOptions, Steering} from "rover";
 
 const STOP_SPEED = 0;
-const MINIMUM_DRIVE_SPEED = 0.52;
-const MAXIMUM_DRIVE_SPEED = 0.85;
-const MINIMUM_TURNING_SPEED = 0.87;
+const MINIMUM_DRIVE_SPEED = 0.53;
+const MAXIMUM_DRIVE_SPEED = 0.75;
+const MINIMUM_TURNING_SPEED = 0.85;
 
 class Rover {
     sensor: Sensor;
@@ -32,6 +32,7 @@ class Rover {
     }
 
     go() {
+
         // stop at final destination
         if (this.navigator.atFinalDestination) {
             this.speed = { left: STOP_SPEED, right: STOP_SPEED}
@@ -65,10 +66,10 @@ class Rover {
 
         let angCurrent = this.navigator.angle(this.navigator.currentLocation, this.navigator.targetLocation);
         let angDiffCurrent = this.navigator.angleDiff(this.sensor.heading, angCurrent);
-        let diff = Math.abs(this.sensor.heading - angCurrent);
+        let diff = Math.abs(this.sensor.heading - angCurrent) % 359;
 
-        if (diff < 1 && this.sensor.turningSpeed < 0.5) {
-            if (this.sensor.targetDistance < 0.1 && this.sensor.drivingSpeed < 0.005) {
+        if (diff < 10) {
+            if (this.sensor.targetDistance < 0.3 && Math.floor(this.sensor.drivingSpeed) < 0.1) {
                 if (!this.navigator.atOrigin) {
                     this.navigator.atTarget = true;
                 }
@@ -76,6 +77,7 @@ class Rover {
                 this.shouldDrive = true;
             }
         } else {
+
             this.shouldOrientate = true;
         }
 
@@ -84,7 +86,7 @@ class Rover {
             this.travel();
 
             if (!this.shouldOrientate) {
-                this.correct(angCurrent, angDiffCurrent);
+                //this.correct(angCurrent, angDiffCurrent);
             }
         }
 
@@ -130,11 +132,12 @@ class Rover {
 
     turn() {
         let ang = this.navigator.angle(this.navigator.currentLocation, this.navigator.targetLocation);
-        let diff = Math.abs(this.sensor.heading - ang);
+        let diff = Math.abs(this.sensor.heading - ang) % 359;
         let angleDiff = this.navigator.angleDiff(this.sensor.heading, ang);
+
         let direction = (angleDiff < 0) ? 'left' : 'right';
 
-        if (Math.abs(diff) < 0.05) {
+        if (Math.abs(diff) < 2) {
             if (Math.floor(this.sensor.turningSpeed) == 0) {
                 this.shouldOrientate = false;
                 this.shouldDrive = true;
@@ -151,28 +154,27 @@ class Rover {
     travel() {
         let speed = STOP_SPEED;
 
-        if (this.sensor.targetDistance < 0.1) {
-            if (this.sensor.drivingSpeed == 0) {
+        if (this.sensor.targetDistance < 0.3) {
+            if (Math.floor(this.sensor.drivingSpeed) == 0) {
                 this.shouldDrive = false;
                 this.navigator.atTarget = true;
             }
         } else {
             if (this.sensor.targetDistance < 3) {
-                if (this.sensor.targetDistance < 0.5) {
+                if (this.sensor.targetDistance < 1) {
                     speed = MINIMUM_DRIVE_SPEED;
                 } else {
                     if (this.sensor.drivingSpeed > 0.2) {
                         speed = 0;
                     } else {
-                        speed = 0.6;
+                        speed = MINIMUM_DRIVE_SPEED;
                     }
-
                 }
             } else {
                 if (this.sensor.drivingSpeed > 2) {
                     speed = MAXIMUM_DRIVE_SPEED;
                 } else {
-                    speed = 0.6;
+                    speed = 0.65;
                 }
             }
         }
@@ -203,7 +205,7 @@ class Rover {
             obstacleDistance =(obstacleDistance / keys.length);
 
             if (this.obstacleDetected) {
-                if (obstacleDistance < 1.5) {
+                if (obstacleDistance < 2.0) {
                     if (this.sensor.targetDistance < 8 && !this.rerouted) {
                         this.navigator.nextDestination(true);
                     }
@@ -230,7 +232,7 @@ class Rover {
                         this.rerouteObstacle = true;
                     }
                 } else {
-                    if (obstacleDistance < 1.8) {
+                    if (obstacleDistance < 2.1) {
                         this.speed = {
                             left: 0.6,
                             right: 0.6,
@@ -239,11 +241,11 @@ class Rover {
                 }
             }
 
-            if (this.sensor.drivingSpeed == 0) {
+            if (Math.floor(this.sensor.drivingSpeed) == 0) {
                 this.obstacleDetected = true;
             }
 
-            if (!this.obstacleDetected && this.sensor.drivingSpeed > 0.01) {
+            if (!this.obstacleDetected && this.sensor.drivingSpeed > 0.3) {
                 this.stop();
             }
         }

@@ -3,6 +3,7 @@ interface IQueue<T> {
     prequeue(item: T): void;
     dequeue(): T | undefined;
     size(): number;
+    queue(): T[];
 }
 
 class Queue<T> implements IQueue<T> {
@@ -25,6 +26,9 @@ class Queue<T> implements IQueue<T> {
     }
     size(): number {
         return this.storage.length;
+    }
+    queue(): T[] {
+        return this.storage;
     }
 }
 

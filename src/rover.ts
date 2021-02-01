@@ -203,7 +203,7 @@ class Rover {
             obstacleDistance =(obstacleDistance / keys.length);
 
             if (this.obstacleDetected) {
-                if (obstacleDistance < 1.5) {
+                if (obstacleDistance < 2) {
                     if (this.sensor.targetDistance < 8 && !this.rerouted) {
                         this.navigator.nextDestination(true);
                     }
@@ -230,7 +230,7 @@ class Rover {
                         this.rerouteObstacle = true;
                     }
                 } else {
-                    if (obstacleDistance < 1.8) {
+                    if (obstacleDistance < 2.2) {
                         this.speed = {
                             left: 0.6,
                             right: 0.6,

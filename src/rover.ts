@@ -4,7 +4,7 @@ import {Engines, PhysicalOptions, Steering} from "rover";
 
 const STOP_SPEED = 0;
 const MINIMUM_DRIVE_SPEED = 0.53;
-const MAXIMUM_DRIVE_SPEED = 0.75;
+const MAXIMUM_DRIVE_SPEED = 0.8;
 const MINIMUM_TURNING_SPEED = 0.85;
 
 class Rover {
@@ -68,7 +68,7 @@ class Rover {
         let angDiffCurrent = this.navigator.angleDiff(this.sensor.heading, angCurrent);
         let diff = Math.abs(this.sensor.heading - angCurrent) % 359;
 
-        if (diff < 10) {
+        if (diff < 5) {
             if (this.sensor.targetDistance < 0.3 && Math.floor(this.sensor.drivingSpeed) < 0.1) {
                 if (!this.navigator.atOrigin) {
                     this.navigator.atTarget = true;
@@ -160,8 +160,8 @@ class Rover {
                 this.navigator.atTarget = true;
             }
         } else {
-            if (this.sensor.targetDistance < 3) {
-                if (this.sensor.targetDistance < 1) {
+            if (this.sensor.targetDistance < 5) {
+                if (this.sensor.targetDistance < 3) {
                     speed = MINIMUM_DRIVE_SPEED;
                 } else {
                     if (this.sensor.drivingSpeed > 0.2) {

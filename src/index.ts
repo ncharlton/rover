@@ -1,13 +1,12 @@
-import {ControlLoop, Simulation, AUTHENTICITY_LEVEL1, AUTHENTICITY_LEVEL2, RoverType, PhysicalOptions} from 'rover'
-import LatLon, { Dms } from 'geodesy/latlon-spherical'
-import Queue from './destinationQueue';
+import {ControlLoop, Simulation, VehicleType} from 'rover'
+import LatLon from 'geodesy/latlon-spherical'
 import Navigator from './navigator'
 import Sensor from "./sensor";
 import Rover from "./rover";
 
 const origin = {
-  latitude:52.47704035313238,
-  longitude:13.3953812272892,
+  latitude: 52.472579849222434,
+  longitude: 13.408491315033999
 }
 
 /**
@@ -18,41 +17,36 @@ const origin = {
  */
 const destinationPoints = [
   {
-    latitude:52.47705035313238,
-    longitude:13.3952812272892,
-    label: 'lower1'
+    latitude: 52.47262544876193,
+    longitude: 13.408905206933467,
+    label: 'Bottom-Right'
   },
   {
-    latitude:52.47722035313238,
-    longitude:13.3952812272892,
-    label: 'upper1'
+    latitude: 52.47262544876193,
+    longitude: 13.407833537403034,
+    label: 'Top-Right'
   },
   {
-    latitude:52.4770303524624,
-    longitude:13.394882565093246,
-    label: 'lower2'
+    latitude: 52.47349201059195,
+    longitude: 13.408905206933467,
+    label: 'Bottom-Right'
   },
   {
-    latitude:52.47724035246239,
-    longitude:13.394882563552992,
-    label: 'upper2'
+    latitude: 52.47349201059195,
+    longitude: 13.407833537403034,
+    label: 'Top-Left'
   },
 ]
 
 const obstacles = [
-  // {
-  //   latitude:52.47715035313238,
-  //   longitude:13.3951399999999,
-  //   radius: 2
-  // },
-  // {
-  //   latitude:52.47712035313238,
-  //   longitude:13.3950199999999,
-  //   radius: 2
-  // },
   {
-    latitude:52.47713035313238,
-    longitude:13.3952399999999,
+    latitude:52.47715035313238,
+    longitude:13.3951399999999,
+    radius: 2
+  },
+  {
+    latitude:52.47712035313238,
+    longitude:13.3950199999999,
     radius: 2
   },
 ]
@@ -136,7 +130,6 @@ for (let i = 1; i < itemCount; i++) {
 }
 
 const loop: ControlLoop = ({location, heading, targetFinderSignal: number,  clock, proximity}, {engines, steering}) => {
-
   navigator.updateCurrentLocation(location.latitude, location.longitude);
 
   sensor.updateProximities(proximity);
@@ -148,15 +141,28 @@ const loop: ControlLoop = ({location, heading, targetFinderSignal: number,  cloc
 const simulation = new Simulation({
   loop,
   origin: origin,
-  roverType: RoverType.tank,
+  vehicleType: VehicleType.Tank,
   element: document.querySelector('main') as HTMLElement,
   locationsOfInterest: destinations,
   renderingOptions: {
     width: 800,
     height: 800,
   },
-  physicalConstraints: AUTHENTICITY_LEVEL2,
-  obstacles: obstacles,
+  //physicalConstraints: AUTHENTICITY_LEVEL2,
+  obstacles: [
+    {
+      radius: 1.5,
+      latitude: 52.473349975964524,
+      longitude: 13.408410590227112
+    }, {
+      radius: 1.5,
+      latitude: 52.47334842753099,
+      longitude: 13.408562210366549
+    }, {
+      radius: 2,
+      latitude: 52.473289718711364,
+      longitude: 13.40855661992137
+    }]
 });
 
 // navigator

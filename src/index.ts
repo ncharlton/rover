@@ -5,8 +5,8 @@ import Sensor from "./sensor";
 import Rover from "./rover";
 
 const origin = {
-  latitude: 52.472579849222434,
-  longitude: 13.408491315033999
+  latitude: 52.47314075953856,
+  longitude: 13.408522540373864
 }
 
 /**
@@ -17,23 +17,23 @@ const origin = {
  */
 const destinationPoints = [
   {
-    latitude: 52.47262544876193,
-    longitude: 13.408905206933467,
+    latitude: 52.47321420688359,
+    longitude: 13.408738801250266,
     label: 'Bottom-Right'
   },
   {
-    latitude: 52.47262544876193,
-    longitude: 13.407833537403034,
+    latitude: 52.47321420688359,
+    longitude: 13.408158429989276,
     label: 'Top-Right'
   },
   {
-    latitude: 52.47349201059195,
-    longitude: 13.408905206933467,
-    label: 'Bottom-Right'
+    latitude: 52.47352844831028,
+    longitude: 13.408738801250266,
+    label: 'Bottom-Left'
   },
   {
-    latitude: 52.47349201059195,
-    longitude: 13.407833537403034,
+    latitude: 52.47352844831028,
+    longitude: 13.408158429989276,
     label: 'Top-Left'
   },
 ]

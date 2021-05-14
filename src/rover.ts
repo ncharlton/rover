@@ -68,7 +68,7 @@ class Rover {
         let angDiffCurrent = this.navigator.angleDiff(this.sensor.heading, angCurrent);
         let diff = Math.abs(this.sensor.heading - angCurrent) % 359;
 
-        if (diff < 2) {
+        if (diff < 10) {
             if (this.sensor.targetDistance < 0.3 && Math.floor(this.sensor.drivingSpeed) < 0.1) {
                 if (!this.navigator.atOrigin) {
                     this.navigator.atTarget = true;

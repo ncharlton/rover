@@ -1,4 +1,4 @@
-import {ControlLoop, Simulation, VehicleType} from 'rover'
+import {ControlLoop, Simulation, VehicleType, AUTHENTICITY_LEVEL2} from 'rover'
 import LatLon from 'geodesy/latlon-spherical'
 import Navigator from './navigator'
 import Sensor from "./sensor";
@@ -148,7 +148,7 @@ const simulation = new Simulation({
     width: 800,
     height: 800,
   },
-  //physicalConstraints: AUTHENTICITY_LEVEL2,
+  physicalConstraints: AUTHENTICITY_LEVEL2,
   obstacles: [
     {
       radius: 1.5,
